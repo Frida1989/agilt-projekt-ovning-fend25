@@ -1,6 +1,8 @@
 let teamA = JSON.parse(localStorage.getItem("teamA")) || []
 let teamB = JSON.parse(localStorage.getItem("teamB")) || []
 
+const MAX_PLAYERS = 5
+
 let teamAName = localStorage.getItem("teamAName") || "Team A"
 let teamBName = localStorage.getItem("teamBName") || "Team B"
 
@@ -123,6 +125,16 @@ ${teamBName}
 
         }
         const team = document.getElementById("teamSelect").value
+        if (team === "A" && teamA.length >= MAX_PLAYERS) {
+            document.getElementById("error").textContent = "Team A is full"
+            return
+        }
+
+        if (team === "B" && teamB.length >= MAX_PLAYERS) {
+            document.getElementById("error").textContent = "Team B is full"
+            return
+        }
+        
         if (team === "A") {
             teamA.push(player)
         }
