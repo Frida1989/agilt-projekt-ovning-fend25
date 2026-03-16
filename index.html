@@ -1,50 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>E-sports Tournament</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-
+  <body>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="addplayer.html">Add Player</a>
+      <a href="index.html">Home</a>
+      <a href="addplayer.html">Add Player</a>
     </nav>
 
     <h1>E-sports Tournament</h1>
 
     <div class="rename">
+      <input id="teamAInput" placeholder="Rename Team A" />
+      <button onclick="renameTeam('A')">Rename</button>
 
-        <input id="teamAInput" placeholder="Rename Team A">
-        <button onclick="renameTeam('A')">Rename</button>
-
-        <input id="teamBInput" placeholder="Rename Team B">
-        <button onclick="renameTeam('B')">Rename</button>
-
+      <input id="teamBInput" placeholder="Rename Team B" />
+      <button onclick="renameTeam('B')">Rename</button>
     </div>
 
     <div class="teams">
+      <div class="team">
+        <h2 id="teamAName"></h2>
+        <ul id="teamAList"></ul>
+      </div>
 
-        <div class="team">
-            <h2 id="teamAName"></h2>
-            <ul id="teamAList"></ul>
-        </div>
-
-        <div class="team">
-            <h2 id="teamBName"></h2>
-            <ul id="teamBList"></ul>
-        </div>
-
+      <div class="team">
+        <h2 id="teamBName"></h2>
+        <ul id="teamBList"></ul>
+      </div>
     </div>
 
     <script src="app.js"></script>
     <script>
-        renderHome()
+      renderHome();
     </script>
-
-</body>
-
+  </body>
 </html>
