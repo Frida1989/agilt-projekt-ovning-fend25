@@ -124,9 +124,7 @@ ${teamBName}
 function renderPlayerInfo() {
   const username = localStorage.getItem("selectedPlayer");
 
-  const player =
-    teamA.find((p) => p.username === username) ||
-    teamB.find((p) => p.username === username);
+  const player = getSelectedPlayer();
 
   const profile = document.getElementById("profile");
 
@@ -138,6 +136,7 @@ function renderPlayerInfo() {
 <p><b>Country:</b> ${player?.country}</p>
 <p><b>Ranking:</b> ${player?.ranking}</p>
 <br>
+<button onclick="startEdit()">Edit</button>
 <button onclick="window.location='home.html'">
 Back
 </button>
@@ -145,4 +144,59 @@ Back
 </div>
 
 `;
+}
+function getSelectedPlayer() {
+  const username = localStorage.getItem("selectedPlayer");
+
+  return (
+    teamA.find((p) => p.username === username) ||
+    teamB.find((p) => p.username === username)
+  );
+}
+function startEdit() {
+  const player = getSelectedPlayer();
+
+  document.getElementById("editUsername").value = player.username;
+  document.getElementById("editFirstname").value = player.firstname;
+  document.getElementById("editLastname").value = player.lastname;
+  document.getElementById("editAge").value = player.age;
+  document.getElementById("editCountry").value = player.country;
+  document.getElementById("editRanking").value = player.ranking;
+
+  document.getElementById("editForm").style.display = "block";
+  document.getElementById("profile").style.display = "none";
+}
+
+function setupEditForm() {
+  const form = document.getElementById("editForm");
+
+  if (!form) return;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const oldUsername = localStorage.getItem("selectedPlayer");
+
+    const player =
+      teamA.find((p) => p.username === oldUsername) ||
+      teamB.find((p) => p.username === oldUsername);
+
+    if (!player) return;
+
+    player.username = document.getElementById("editUsername").value;
+    player.firstname = document.getElementById("editFirstname").value;
+    player.lastname = document.getElementById("editLastname").value;
+    player.age = document.getElementById("editAge").value;
+    player.country = document.getElementById("editCountry").value;
+    player.ranking = document.getElementById("editRanking").value;
+
+    save();
+
+    localStorage.setItem("selectedPlayer", player.username);
+
+    document.getElementById("editForm").style.display = "none";
+    document.getElementById("profile").style.display = "block";
+
+    renderPlayerInfo();
+  });
 }
