@@ -38,33 +38,28 @@ function renderHome() {
     const listB = document.getElementById("teamBList")
     listA.innerHTML = ""
     listB.innerHTML = ""
-    teamA.forEach(p => {
+
+    teamA.forEach((p, index) => {
         const li = document.createElement("li")
         li.className = "player"
         li.innerHTML = `
-
 <span onclick="goToPlayer('${p.username}')">${p.username}</span>
-
-<button onclick="removePlayer('A','${p.username}')">
-Remove
-</button>
-
+<button onclick="movePlayer('A', ${index})">Move</button>
+<button onclick="removePlayer('A','${p.username}')">Remove</button>
 `
         listA.appendChild(li)
     })
-    teamB.forEach(p => {
+
+    teamB.forEach((p, index) => {
         const li = document.createElement("li")
         li.className = "player"
         li.innerHTML = `
 <span onclick="goToPlayer('${p.username}')">${p.username}</span>
-<button onclick="removePlayer('B','${p.username}')">
-Remove
-</button>
-
+<button onclick="movePlayer('B', ${index})">Move</button>
+<button onclick="removePlayer('B','${p.username}')">Remove</button>
 `
         listB.appendChild(li)
     })
-
 }
 
 
@@ -75,14 +70,13 @@ function goToPlayer(username) {
 
 function removePlayer(team, username) {
     if (team === "A") {
-        teamA.filter(p => p.username !== username)
+        teamA = teamA.filter(p => p.username !== username)
     }
     if (team === "B") {
-        teamB.filter(p => p.username !== username)
+        teamB = teamB.filter(p => p.username !== username)
     }
     save()
     renderHome()
-
 }
 
 function usernameExists(username) {
@@ -152,7 +146,7 @@ function renderPlayerInfo() {
 <p><b>Country:</b> ${player?.country}</p>
 <p><b>Ranking:</b> ${player?.ranking}</p>
 <br>
-<button onclick="window.location='home.html'">
+<button onclick="window.location='index.html'">
 Back
 </button>
 
@@ -160,4 +154,18 @@ Back
 
 `
 
+}
+
+function movePlayer(team, index) {
+    if (team === "A") {
+        if (teamB.length >= 5) { alert("Team B is full"); return }
+        const player = teamA.splice(index, 1)[0]
+        teamB.push(player)
+    } else {
+        if (teamA.length >= 5) { alert("Team A is full"); return }
+        const player = teamB.splice(index, 1)[0]
+        teamA.push(player)
+    }
+    save()
+    renderHome()
 }
