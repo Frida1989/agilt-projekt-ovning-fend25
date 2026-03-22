@@ -1,7 +1,8 @@
 let teamA = JSON.parse(localStorage.getItem("teamA")) || []
 let teamB = JSON.parse(localStorage.getItem("teamB")) || []
 
-const MAX_PLAYERS = 5
+const MIN_PLAYERS = 3
+const MAX_PLAYERS = 7
 
 let teamAName = localStorage.getItem("teamAName") || "Team A"
 let teamBName = localStorage.getItem("teamBName") || "Team B"
@@ -33,9 +34,26 @@ function renameTeam(team) {
 }
 
 
+function getTeamStatus(teamArray) {
+    if (teamArray.length < MIN_PLAYERS) {
+        return `⚠︎ Needs at least ${MIN_PLAYERS} players`
+    }
+    return "✅ Minimum requirement met"
+}
+
 function renderHome() {
-    document.getElementById("teamAName").textContent = teamAName
-    document.getElementById("teamBName").textContent = teamBName
+    document.getElementById("teamAName").innerHTML = `
+        ${teamAName} (${teamA.length}/${MAX_PLAYERS})
+        <br>
+        <small>${getTeamStatus(teamA)}</small>
+    `
+
+    document.getElementById("teamBName").innerHTML = `
+        ${teamBName} (${teamB.length}/${MAX_PLAYERS})
+        <br>
+        <small>${getTeamStatus(teamB)}</small>
+    `
+
     const listA = document.getElementById("teamAList")
     const listB = document.getElementById("teamBList")
     listA.innerHTML = ""
@@ -126,12 +144,12 @@ ${teamBName}
         }
         const team = document.getElementById("teamSelect").value
         if (team === "A" && teamA.length >= MAX_PLAYERS) {
-            document.getElementById("error").textContent = "Team A is full"
+            document.getElementById("error").textContent = "Team A already has 7 players"
             return
         }
 
         if (team === "B" && teamB.length >= MAX_PLAYERS) {
-            document.getElementById("error").textContent = "Team B is full"
+            document.getElementById("error").textContent = "Team B already has 7 players"
             return
         }
         
