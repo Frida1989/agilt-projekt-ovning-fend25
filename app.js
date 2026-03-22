@@ -137,9 +137,9 @@ ${teamBName}
             username,
             firstname: document.getElementById("firstname").value,
             lastname: document.getElementById("lastname").value,
-            age: document.getElementById("age"),
+            age: document.getElementById("age").value,
             country: document.getElementById("country").value,
-            ranking: document.getElementById("ranking")
+            ranking: document.getElementById("ranking").value
 
         }
         const team = document.getElementById("teamSelect").value
@@ -170,7 +170,7 @@ function renderPlayerInfo() {
 
     const username = localStorage.getItem("selectedPlayer")
 
-    const player = teamA.find(p => p.username === username)
+    const player = teamA.find(p => p.username === username) || teamB.find(p => p.username === username)
 
     const profile = document.getElementById("profile")
 
