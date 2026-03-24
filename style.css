@@ -339,5 +339,83 @@ button {
   .player {
     flex-direction: column;
     align-items: flex-start;
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rename {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .teams {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .team {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .player {
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .profile {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  form {
+    width: 100%;
+    padding: 20px;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+
+  nav a {
+    width: 100%;
+    text-align: center;
+  }
+
+  .team,
+  .profile,
+  form {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  .player span,
+  .profile,
+  .profile p,
+  .team {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  button {
+    width: 100%;
   }
 }
