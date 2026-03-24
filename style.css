@@ -38,3 +38,242 @@ nav a {
     border-radius: 10px;
     width: 300px;
 }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding: 30px;
+    color: #374151;
+    background: linear-gradient(135deg, #e0f2fe 0%, #eff6ff 45%, #dcfce7 100%);
+    background-attachment: fixed;
+}
+
+h1 {
+    text-align: center;
+    margin: 25px 0;
+    font-size: 2.2rem;
+    color: #1d4ed8;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+h2 {
+    margin-bottom: 12px;
+    color: #15803d;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #34d399);
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.18);
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.16);
+    transition: 0.25s ease;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.28);
+    transform: translateY(-2px);
+}
+
+.rename {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.84);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 12px 28px rgba(59, 130, 246, 0.08);
+}
+
+input,
+select {
+    padding: 12px 14px;
+    border: 2px solid #bfdbfe;
+    border-radius: 14px;
+    outline: none;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    transition: 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.14);
+}
+
+button {
+    border: none;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(90deg, #3b82f6, #34d399);
+    transition: 0.25s ease;
+    box-shadow: 0 8px 18px rgba(59, 130, 246, 0.18);
+}
+
+button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 22px rgba(52, 211, 153, 0.24);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.teams {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.team {
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    padding: 22px;
+    border-radius: 24px;
+    width: 320px;
+    box-shadow: 0 16px 34px rgba(59, 130, 246, 0.1);
+    backdrop-filter: blur(8px);
+    transition: 0.25s ease;
+}
+
+.team:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 38px rgba(52, 211, 153, 0.14);
+}
+
+ul {
+    list-style: none;
+    margin-top: 12px;
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: linear-gradient(90deg, #eff6ff, #ecfeff, #ecfdf5);
+    border: 1px solid #dbeafe;
+}
+
+.player span {
+    cursor: pointer;
+    color: #1d4ed8;
+    font-weight: bold;
+    transition: 0.2s ease;
+    word-break: break-word;
+}
+
+.player span:hover {
+    color: #0ea5e9;
+    text-decoration: underline;
+}
+
+form {
+    max-width: 540px;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 16px 34px rgba(59, 130, 246, 0.1);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.75);
+}
+
+form button {
+    margin-top: 8px;
+}
+
+#error {
+    max-width: 540px;
+    margin: 14px auto 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-weight: bold;
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    text-align: center;
+    min-height: 20px;
+}
+
+#profile {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.profile {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 32px;
+    border-radius: 26px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 18px 38px rgba(59, 130, 246, 0.12);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 255, 255, 0.75);
+}
+
+.profile h2 {
+    margin-bottom: 18px;
+    font-size: 1.9rem;
+    text-align: center;
+    color: #1d4ed8;
+}
+
+.profile p {
+    margin: 12px 0;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, #eff6ff, #ecfeff, #ecfdf5);
+    border: 1px solid #dbeafe;
+}
+
+.profile button {
+    width: 100%;
+    margin-top: 18px;
+}
+
+small {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #15803d;
+    font-weight: bold;
+}
+
+p {
+    line-height: 1.5;
+}
