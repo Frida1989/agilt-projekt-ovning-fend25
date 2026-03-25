@@ -22,7 +22,8 @@
       <input id="teamBInput" placeholder="Rename Team B" />
       <button onclick="renameTeam('B')">Rename</button>
     </div>
-
+    <input id="searchInput" type="text" placeholder="Sök efter användarnamn" />
+    <p id="noResultMessage"></p>
     <div class="teams">
       <div class="team">
         <h2 id="teamAName"></h2>
@@ -38,6 +39,7 @@
     <script src="app.js"></script>
     <script>
       renderHome();
+      setupSearch();
     </script>
   </body>
 </html>

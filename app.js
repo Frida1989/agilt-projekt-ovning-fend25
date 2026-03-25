@@ -1,5 +1,6 @@
 let teamA = JSON.parse(localStorage.getItem("teamA")) || [];
 let teamB = JSON.parse(localStorage.getItem("teamB")) || [];
+let searchTerm = "";
 
 const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 7;
@@ -58,19 +59,30 @@ function renderHome() {
 
   const listA = document.getElementById("teamAList");
   const listB = document.getElementById("teamBList");
+  const noResultMessage = document.getElementById("noResultMessage");
+
   listA.innerHTML = "";
   listB.innerHTML = "";
-  teamA.forEach((p) => {
+
+  const filteredTeamA = teamA.filter((p) =>
+    p.username.toLowerCase().includes(searchTerm),
+  );
+
+  const filteredTeamB = teamB.filter((p) =>
+    p.username.toLowerCase().includes(searchTerm),
+  );
+
+  filteredTeamA.forEach((p) => {
     const li = document.createElement("li");
     li.className = "player";
     li.innerHTML = `
-             <span onclick="goToPlayer('${p.username}')">${p.username}</span>
+            <span onclick="goToPlayer('${p.username}')">${p.username}</span>
             <button onclick="removePlayer('A','${p.username}')">Remove</button>
         `;
     listA.appendChild(li);
   });
 
-  teamB.forEach((p) => {
+  filteredTeamB.forEach((p) => {
     const li = document.createElement("li");
     li.className = "player";
     li.innerHTML = `
@@ -79,6 +91,12 @@ function renderHome() {
         `;
     listB.appendChild(li);
   });
+
+  if (searchTerm && filteredTeamA.length === 0 && filteredTeamB.length === 0) {
+    noResultMessage.textContent = "Inga spelare hittades";
+  } else {
+    noResultMessage.textContent = "";
+  }
 }
 
 function goToPlayer(username) {
@@ -259,5 +277,15 @@ function setupEditForm() {
     document.getElementById("profile").style.display = "block";
 
     renderPlayerInfo();
+  });
+}
+function setupSearch() {
+  const searchInput = document.getElementById("searchInput");
+
+  if (!searchInput) return;
+
+  searchInput.addEventListener("input", (e) => {
+    searchTerm = e.target.value.toLowerCase().trim();
+    renderHome();
   });
 }
