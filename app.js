@@ -1,163 +1,291 @@
-let teamA = JSON.parse(localStorage.getItem("teamA")) || []
-let teamB = JSON.parse(localStorage.getItem("teamB")) || []
+let teamA = JSON.parse(localStorage.getItem("teamA")) || [];
+let teamB = JSON.parse(localStorage.getItem("teamB")) || [];
+let searchTerm = "";
 
-let teamAName = localStorage.getItem("teamAName") || "Team A"
-let teamBName = localStorage.getItem("teamBName") || "Team B"
+const MIN_PLAYERS = 3;
+const MAX_PLAYERS = 7;
 
+let teamAName = localStorage.getItem("teamAName") || "Team A";
+let teamBName = localStorage.getItem("teamBName") || "Team B";
 
 function save() {
-
-    localStorage.setItem("teamA", JSON.stringify(teamA))
-    localStorage.setItem("teamB", JSON.stringify(teamB))
-
-    localStorage.setItem("teamAName", teamAName)
-    localStorage.setItem("teamBName", teamBName)
-
+  localStorage.setItem("teamA", JSON.stringify(teamA));
+  localStorage.setItem("teamB", JSON.stringify(teamB));
+  localStorage.setItem("teamAName", teamAName);
+  localStorage.setItem("teamBName", teamBName);
 }
-
 
 function renameTeam(team) {
+  if (team === "A") {
+    const val = document.getElementById("teamAInput").value;
+    if (val) teamAName = val;
+  }
 
-    if (team === "A") {
-        const val = document.getElementById("teamAInput").value
-        if (val) teamAName = val
-    }
-    if (team === "B") {
-        const val = document.getElementById("teamBInput").value
-        if (val) teamBName = val
-    }
-    save()
-    renderHome()
+  if (team === "B") {
+    const val = document.getElementById("teamBInput").value;
+    if (val) teamBName = val;
+  }
+
+  save();
+  renderHome();
 }
 
+function getTeamStatus(teamArray) {
+  if (teamArray.length < MIN_PLAYERS) {
+    return `⚠︎ Needs at least ${MIN_PLAYERS} players`;
+  }
+  return "✅ Minimum requirement met";
+}
+
+function getTeamStatus(teamArray) {
+  if (teamArray.length < MIN_PLAYERS) {
+    return `⚠︎ Needs at least ${MIN_PLAYERS} players`;
+  }
+  return "✅ Minimum requirement met";
+}
 
 function renderHome() {
-    document.getElementById("teamAName").textContent = teamAName
-    document.getElementById("teamBName").textContent = teamBName
-    const listA = document.getElementById("teamAList")
-    const listB = document.getElementById("teamBList")
-    listA.innerHTML = ""
-    listB.innerHTML = ""
-    teamA.forEach(p => {
-        const li = document.createElement("li")
-        li.className = "player"
-        li.innerHTML = `
+  document.getElementById("teamAName").innerHTML = `
+        ${teamAName} (${teamA.length}/${MAX_PLAYERS})
+        <br>
+        <small>${getTeamStatus(teamA)}</small>
+    `;
 
-<span onclick="goToPlayer('${p.username}')">${p.username}</span>
+  document.getElementById("teamBName").innerHTML = `
+        ${teamBName} (${teamB.length}/${MAX_PLAYERS})
+        <br>
+        <small>${getTeamStatus(teamB)}</small>
+    `;
 
-<button onclick="removePlayer('A','${p.username}')">
-Remove
-</button>
+  const listA = document.getElementById("teamAList");
+  const listB = document.getElementById("teamBList");
+  const noResultMessage = document.getElementById("noResultMessage");
 
-`
-        listA.appendChild(li)
-    })
-    teamB.forEach(p => {
-        const li = document.createElement("li")
-        li.className = "player"
-        li.innerHTML = `
-<span onclick="goToPlayer('${p.username}')">${p.username}</span>
-<button onclick="removePlayer('B','${p.username}')">
-Remove
-</button>
+  listA.innerHTML = "";
+  listB.innerHTML = "";
 
-`
-        listB.appendChild(li)
-    })
+  const filteredTeamA = teamA.filter((p) =>
+    p.username.toLowerCase().includes(searchTerm),
+  );
 
+  const filteredTeamB = teamB.filter((p) =>
+    p.username.toLowerCase().includes(searchTerm),
+  );
+
+  filteredTeamA.forEach((p) => {
+    const li = document.createElement("li");
+    li.className = "player";
+    li.innerHTML = `
+            <span onclick="goToPlayer('${p.username}')">${p.username}</span>
+            <button onclick="removePlayer('A','${p.username}')">Remove</button>
+        `;
+    listA.appendChild(li);
+  });
+
+  filteredTeamB.forEach((p) => {
+    const li = document.createElement("li");
+    li.className = "player";
+    li.innerHTML = `
+            <span onclick="goToPlayer('${p.username}')">${p.username}</span>
+            <button onclick="removePlayer('B','${p.username}')">Remove</button>
+        `;
+    listB.appendChild(li);
+  });
+
+  if (searchTerm && filteredTeamA.length === 0 && filteredTeamB.length === 0) {
+    noResultMessage.textContent = "Inga spelare hittades";
+  } else {
+    noResultMessage.textContent = "";
+  }
 }
 
-
 function goToPlayer(username) {
-    localStorage.setItem("selectedPlayer", username)
-    window.location.href = "playerinfo.html"
+  localStorage.setItem("selectedPlayer", username);
+  window.location.href = "playerinfo.html";
 }
 
 function removePlayer(team, username) {
-    if (team === "A") {
-        teamA.filter(p => p.username !== username)
-    }
-    if (team === "B") {
-        teamB.filter(p => p.username !== username)
-    }
-    save()
-    renderHome()
-
+  if (team === "A") {
+    teamA = teamA.filter((p) => p.username !== username);
+  }
+  if (team === "B") {
+    teamB = teamB.filter((p) => p.username !== username);
+  }
+  save();
+  renderHome();
 }
 
 function usernameExists(username) {
-    return teamA.includes(username) || teamB.includes(username)
+  return (
+    teamA.some((p) => p.username === username) ||
+    teamB.some((p) => p.username === username)
+  );
 }
 
-
 function renderAddPlayer() {
+  const teamSelect = document.getElementById("teamSelect");
 
-    const teamSelect = document.getElementById("teamSelect")
+  teamSelect.innerHTML = `
+        <option value="A" ${teamA.length >= MAX_PLAYERS}>
+            ${teamAName}
+        </option>
 
-    teamSelect.innerHTML = `
+        <option value="B" ${teamB.length >= MAX_PLAYERS}>
+            ${teamBName}
+        </option>
+    `;
 
-<option value="A" ${teamA.length >= 5 ? "disabled" : ""}>
-${teamAName}
-</option>
+  document.getElementById("playerForm").addEventListener("submit", (e) => {
+    e.preventDefault();
 
-<option value="B" ${teamB.length >= 5 ? "disabled" : ""}>
-${teamBName}
-</option>
+    const errorElement = document.getElementById("error");
+    const username = document.getElementById("username").value.trim();
 
-`
+    errorElement.textContent = "";
 
-    document.getElementById("playerForm").addEventListener("submit", e => {
+    if (usernameExists(username)) {
+      errorElement.textContent = "Username already exists";
+      return;
+    }
 
-        e.preventDefault()
-        const username = document.getElementById("username").value
-        if (usernameExists) {
-            document.getElementById("error").textContent = "Username already exists"
-        }
-        const player = {
-            username,
-            firstname: document.getElementById("firstname").value,
-            lastname: document.getElementById("lastname").value,
-            age: document.getElementById("age"),
-            country: document.getElementById("country").value,
-            ranking: document.getElementById("ranking")
+    const player = {
+      username,
+      firstname: document.getElementById("firstname").value,
+      lastname: document.getElementById("lastname").value,
+      age: document.getElementById("age").value,
+      country: document.getElementById("country").value,
+      ranking: document.getElementById("ranking").value,
+    };
 
-        }
-        const team = document.getElementById("teamSelect").value
-        if (team === "A") {
-            teamA.push(player)
-        }
-        if (team === "B") {
-            teamB.push(player)
-        }
-        save()
-        window.location.href = "index.html"
+    const team = document.getElementById("teamSelect").value;
 
-    })
+    if (team === "A" && teamA.length >= MAX_PLAYERS) {
+      errorElement.textContent = `Team A already has ${MAX_PLAYERS} players`;
+      return;
+    }
 
+    if (team === "B" && teamB.length >= MAX_PLAYERS) {
+      errorElement.textContent = `Team B already has ${MAX_PLAYERS} players`;
+      return;
+    }
+
+    if (team === "A") {
+      teamA.push(player);
+    }
+
+    if (team === "B") {
+      teamB.push(player);
+    }
+
+    save();
+    window.location.href = "index.html";
+  });
+}
+
+function getSelectedPlayer() {
+  const username = localStorage.getItem("selectedPlayer");
+
+  return (
+    teamA.find((p) => p.username === username) ||
+    teamB.find((p) => p.username === username)
+  );
 }
 
 function renderPlayerInfo() {
+  const player = getSelectedPlayer();
+  const profile = document.getElementById("profile");
 
-    const username = localStorage.getItem("selectedPlayer")
-
-    const player = teamA.find(p => p.username === username)
-
-    const profile = document.getElementById("profile")
-
+  if (!player) {
     profile.innerHTML = `
-<div class="profile">
-<h2>${player?.username}</h2>
-<p><b>Name:</b> ${player?.firstname} ${player?.lastname}</p>
-<p><b>Age:</b> ${player?.age}</p>
-<p><b>Country:</b> ${player?.country}</p>
-<p><b>Ranking:</b> ${player?.ranking}</p>
-<br>
-<button onclick="window.location='home.html'">
-Back
-</button>
+            <div class="profile">
+                <p>Player not found.</p>
+                <button onclick="window.location='home.html'">Back</button>
+            </div>
+        `;
+    return;
+  }
 
-</div>
+  profile.innerHTML = `
+        <div class="profile">
+            <h2>${player.username}</h2>
+            <p><b>Name:</b> ${player.firstname} ${player.lastname}</p>
+            <p><b>Age:</b> ${player.age}</p>
+            <p><b>Country:</b> ${player.country}</p>
+            <p><b>Ranking:</b> ${player.ranking}</p>
+            <br>
+            <button onclick="startEdit()">Edit</button>
+            <button onclick="window.location='home.html'">Back</button>
+        </div>
+    `;
+}
 
-`
+function startEdit() {
+  const player = getSelectedPlayer();
+  if (!player) return;
 
+  document.getElementById("editUsername").value = player.username;
+  document.getElementById("editFirstname").value = player.firstname;
+  document.getElementById("editLastname").value = player.lastname;
+  document.getElementById("editAge").value = player.age;
+  document.getElementById("editCountry").value = player.country;
+  document.getElementById("editRanking").value = player.ranking;
+
+  document.getElementById("editForm").style.display = "block";
+  document.getElementById("profile").style.display = "none";
+}
+
+function setupEditForm() {
+  const form = document.getElementById("editForm");
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const oldUsername = localStorage.getItem("selectedPlayer");
+    const newUsername = document.getElementById("editUsername").value.trim();
+
+    const player =
+      teamA.find((p) => p.username === oldUsername) ||
+      teamB.find((p) => p.username === oldUsername);
+
+    if (!player) return;
+
+    if (newUsername !== oldUsername && usernameExists(newUsername)) {
+      const errorElement = document.getElementById("editError");
+      if (errorElement) {
+        errorElement.textContent = "Username already exists";
+      }
+      return;
+    }
+
+    const errorElement = document.getElementById("editError");
+    if (errorElement) {
+      errorElement.textContent = "";
+    }
+
+    player.username = newUsername;
+    player.firstname = document.getElementById("editFirstname").value;
+    player.lastname = document.getElementById("editLastname").value;
+    player.age = document.getElementById("editAge").value;
+    player.country = document.getElementById("editCountry").value;
+    player.ranking = document.getElementById("editRanking").value;
+
+    save();
+    localStorage.setItem("selectedPlayer", player.username);
+
+    document.getElementById("editForm").style.display = "none";
+    document.getElementById("profile").style.display = "block";
+
+    renderPlayerInfo();
+  });
+}
+function setupSearch() {
+  const searchInput = document.getElementById("searchInput");
+
+  if (!searchInput) return;
+
+  searchInput.addEventListener("input", (e) => {
+    searchTerm = e.target.value.toLowerCase().trim();
+    renderHome();
+  });
 }

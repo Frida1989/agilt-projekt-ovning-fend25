@@ -1,20 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Player Info</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="app.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="addplayer.html">Add Player</a>
+      <a href="index.html">Home</a>
+      <a href="addplayer.html">Add Player</a>
     </nav>
     <div id="profile"></div>
+    <form id="editForm" style="display: none">
+      <input id="editUsername" placeholder="Username" required />
+      <input id="editFirstname" placeholder="First name" required />
+      <input id="editLastname" placeholder="Last name" required />
+      <input id="editAge" type="number" placeholder="Age" required />
+      <input id="editCountry" placeholder="Country" required />
+
+      <select id="editRanking">
+        <option>Iron</option>
+        <option>Bronze</option>
+        <option>Silver</option>
+        <option>Gold</option>
+        <option>Diamond</option>
+      </select>
+
+      <br /><br />
+      <button type="submit">Save</button>
+    </form>
     <script>
-        renderPlayerInfo()
+      renderPlayerInfo();
+      setupEditForm();
     </script>
-</body>
+  </body>
 </html>
